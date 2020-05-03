@@ -64,8 +64,13 @@ class Snake {
     }
   }
   draw() {
-    fill(230, 230, 180);
+    
     for (let i = 0; i < this.body.length; i++) {
+	  fill(
+		128 + sin(i/5 + 3)*128,
+		128 + sin(i/5 + 1.5)*128,
+		128 + sin(i/5 + 0)*128	  
+	  );
       rect(this.body[i].x * SCALE,
         this.body[i].y * SCALE,
         SCALE,
@@ -116,6 +121,7 @@ function draw() {
   background(20);
   //draw boarder
   noFill();
+  strokeWeight(5);
   stroke(50, 50, 255);
   rect(SCALE, SCALE, WIDTH - SCALE*2, HEIGHT - SCALE*2);
   noStroke();
