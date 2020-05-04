@@ -5,7 +5,11 @@ const GUI_HEIGHT = 40;
 const X_TILES = 15;
 const Y_TILES = 15;
 const FRAME_RATE = 5;
-let score;
+
+// state variables
+let score = 0;
+let input_received = false;
+let game_state = 0;
 
 class Snake {
   constructor() {
@@ -31,6 +35,7 @@ class Snake {
     if (this.body.length > this.maxLength) {
       this.body.shift();
     }
+	input_received = false;
   }
   checkCollision() {
 	//Edge-of-map collision
@@ -64,12 +69,11 @@ class Snake {
     }
   }
   draw() {
-    
     for (let i = 0; i < this.body.length; i++) {
 	  fill(
-		128 + sin(i/5 + 3)*128,
-		128 + sin(i/5 + 1.5)*128,
-		128 + sin(i/5 + 0)*128	  
+		128 + sin(i/2 + 3)*128,
+		128 + sin(i/2 + 1.5)*128,
+		128 + sin(i/2 + 0)*128	  
 	  );
       rect(this.body[i].x * SCALE,
         this.body[i].y * SCALE,
@@ -114,7 +118,7 @@ let apple = new Apple(9, 9);
 function setup() {
   createCanvas(WIDTH, HEIGHT + GUI_HEIGHT);
   frameRate(FRAME_RATE);
-  score = 0;
+  //score = 0;
 }
 
 function draw() {
@@ -143,6 +147,8 @@ function draw() {
 
 
 function keyPressed() {
+  if (input_received) {return}
+  input_received = true;
   let moveDir = {
     x: 0,
     y: 0
