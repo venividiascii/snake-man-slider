@@ -107,13 +107,22 @@ class Apple {
   }
   move(isEaten) {
     if (isEaten) {
-      this.x = floor(random(1, X_TILES - 1));
-      this.y = floor(random(1, Y_TILES - 1));
-    }
+		let onSnake = true;
+		while(onSnake){
+			this.x = floor(random(1, X_TILES - 1));
+			this.y = floor(random(1, Y_TILES - 1));
+			for (let i = 0; i < snake.body.length; i++) {
+				if ((this.x == snake.body[i].x && this.y == snake.body[i].y)){
+					onSnake = true;
+					break;
+				}
+				onSnake = false;
+			}
+		}
+	}
   }
   draw() {
     fill(230, 0, 0);
-    //rect(this.x * SCALE, this.y * SCALE, SCALE, SCALE)
 	textAlign(CENTER, CENTER);
 	textSize(30);
 	text('🍎', this.x * SCALE+SCALE/2, this.y * SCALE+SCALE/2);
