@@ -36,9 +36,7 @@ class Snake {
 		  this.alive = false;
 		  this.body.pop();
 		  return;
-		  
 	  }
-
     if (this.body.length > this.maxLength) {
       this.body.shift();
     }
@@ -78,9 +76,9 @@ class Snake {
   draw() {
     for (let i = 0; i < this.body.length; i++) {
 	  fill(
-		128 + sin(i/2 + 3)*128,
-		128 + sin(i/2 + 1.5)*128,
-		128 + sin(i/2 + 0)*128	  
+		128 + sin(i/4 + 3)*128,
+		128 + sin(i/4 + 1.5)*128,
+		128 + sin(i/4 + 0)*128	  
 	  );
       rect(this.body[i].x * SCALE,
         this.body[i].y * SCALE,
@@ -89,44 +87,41 @@ class Snake {
     }
   }
   changeDirection(direction) {
-	if (this.direction.x != -direction.x 
-		&& this.direction.x != direction.x){
-		if (this.direction.y != -direction.y){
-		    input_received = true;
-			this.direction = direction;
-		}
+	if (this.direction.x != -direction.x && this.direction.x != direction.x){
+		input_received = true;
+		this.direction = direction;
 	}
   }
 }
 
 class Apple {
-  constructor(x, y) {
-    this.x = x;
-    this.y = y;
-    this.isEaten = false;
-  }
-  move(isEaten) {
-    if (isEaten) {
-		let onSnake = true;
-		while(onSnake){
-			this.x = floor(random(1, X_TILES - 1));
-			this.y = floor(random(1, Y_TILES - 1));
-			for (let i = 0; i < snake.body.length; i++) {
-				if ((this.x == snake.body[i].x && this.y == snake.body[i].y)){
-					onSnake = true;
-					break;
+	constructor(x, y) {
+		this.x = x;
+		this.y = y;
+		this.isEaten = false;
+	}
+	move(isEaten) {
+		if (isEaten) {
+			let onSnake = true;
+			while(onSnake){
+				this.x = floor(random(1, X_TILES - 1));
+				this.y = floor(random(1, Y_TILES - 1));
+				for (let i = 0; i < snake.body.length; i++) {
+					if ((this.x == snake.body[i].x && this.y == snake.body[i].y)){
+						onSnake = true;
+						break;
+					}
+					onSnake = false;
 				}
-				onSnake = false;
 			}
 		}
 	}
-  }
-  draw() {
-    fill(230, 0, 0);
-	textAlign(CENTER, CENTER);
-	textSize(30);
-	text('🍎', this.x * SCALE+SCALE/2, this.y * SCALE+SCALE/2);
-  }
+	draw() {
+		fill(230, 0, 0);
+		textAlign(CENTER, CENTER);
+		textSize(30);
+		text('🍎', this.x * SCALE+SCALE/2, this.y * SCALE+SCALE/2);
+	}
 }
 
 
@@ -134,58 +129,54 @@ let snake = new Snake();
 let apple = new Apple(9, 9);
 
 function setup() {
-  createCanvas(WIDTH, HEIGHT + GUI_HEIGHT);
-  frameRate(FRAME_RATE);
-  //score = 0;
+	createCanvas(WIDTH, HEIGHT + GUI_HEIGHT);
+	frameRate(FRAME_RATE);
+	//score = 0;
 }
 
 function draw() {
-  background(20);
-  //draw boarder
-  noFill();
-  strokeWeight(5);
-  stroke(50, 50, 255);
-  rect(SCALE, SCALE, WIDTH - SCALE*2, HEIGHT - SCALE*2);
-  noStroke();
-  
-  fill(255);
-  textAlign(CENTER, CENTER);
-  textSize(30);
-  text('🐍 ' + (score +3) +'           🍎 ' + score, 0, HEIGHT, width);
+	background(20);
+	//draw boarder
+	noFill();
+	strokeWeight(5);
+	stroke(50, 50, 255);
+	rect(SCALE, SCALE, WIDTH - SCALE*2, HEIGHT - SCALE*2);
+	noStroke();
 
- 
-  snake.checkCollision();
-  snake.move();  
-  snake.draw();
-  
-  let eaten = snake.isAppleEdible(apple);
-  apple.move(eaten);
-  apple.draw();
+	fill(255);
+	textAlign(CENTER, CENTER);
+	textSize(30);
+	text('🐍 '+(score+3)+'           🍎 '+score, 0, HEIGHT, WIDTH);
+
+	snake.checkCollision();
+	snake.move();  
+	snake.draw();
+
+	let eaten = snake.isAppleEdible(apple);
+	apple.move(eaten);
+	apple.draw();
 }
 
 
 function keyPressed() {
-  if (input_received) {return}
+	if (input_received) {return}
 
-  let moveDir = {
-    x: 0,
-    y: 0
-  }
+	let moveDir = {x: 0,  y: 0}
 
-  switch (keyCode) {
-    case LEFT_ARROW:
-      moveDir.x = -1;
-      break;
-    case RIGHT_ARROW:
-      moveDir.x = 1;
-      break;
-    case UP_ARROW:
-      moveDir.y = -1;
-      break;
-    case DOWN_ARROW:
-      moveDir.y = 1;
-      break;
-  }
+	switch (keyCode) {
+		case LEFT_ARROW:
+			moveDir.x = -1;
+			break;
+		case RIGHT_ARROW:
+			moveDir.x = 1;
+			break;
+		case UP_ARROW:
+			moveDir.y = -1;
+			break;
+		case DOWN_ARROW:
+			moveDir.y = 1;
+			break;
+	}
 
-  snake.changeDirection(moveDir);
+	snake.changeDirection(moveDir);
 }
