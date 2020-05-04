@@ -31,7 +31,14 @@ class Snake {
     this.body.push({
       x: this.body[max].x + this.direction.x,
       y: this.body[max].y + this.direction.y
-    })
+	})
+	  if (this.checkCollision()){
+		  this.alive = false;
+		  this.body.pop();
+		  return;
+		  
+	  }
+
     if (this.body.length > this.maxLength) {
       this.body.shift();
     }
@@ -82,8 +89,10 @@ class Snake {
     }
   }
   changeDirection(direction) {
-	if (this.direction.x != -direction.x){
+	if (this.direction.x != -direction.x 
+		&& this.direction.x != direction.x){
 		if (this.direction.y != -direction.y){
+		    input_received = true;
 			this.direction = direction;
 		}
 	}
@@ -135,9 +144,9 @@ function draw() {
   textSize(30);
   text('🐍 ' + (score +3) +'           🍎 ' + score, 0, HEIGHT, width);
 
-  snake.move();   
+ 
   snake.checkCollision();
-
+  snake.move();  
   snake.draw();
   
   let eaten = snake.isAppleEdible(apple);
@@ -148,7 +157,7 @@ function draw() {
 
 function keyPressed() {
   if (input_received) {return}
-  input_received = true;
+
   let moveDir = {
     x: 0,
     y: 0
